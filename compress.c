@@ -12,7 +12,7 @@ int main(int argc, char ** argv) {
   struct ring_buffer input_buffer;
 
   char current;
-  char string_buffer[256] = {0};
+  char string_buffer[10] = {0};
 
   if (argc > 1) {
     input_fd = open(argv[1], O_RDONLY);
@@ -24,14 +24,19 @@ int main(int argc, char ** argv) {
   else
     printf("Please provide a filename");
 
-  initBuffer(&input_buffer, 256);
 
-  while (read(input_fd, &current, 1)) {
+
+  initBuffer(&input_buffer, 10);
+
+  for (int i = 0; i < 20; i++) {
+  //while (read(input_fd, &current, 1)) {
+    read(input_fd, &current, 1);
     pushBack(&input_buffer, current);
+    printBuffer(&input_buffer);
   } //end while (input..
 
   popAllButBack(&input_buffer, string_buffer);
-  printf("%s", string_buffer);
+  printf("before: %s after\n", string_buffer);
 
   destroyBuffer(&input_buffer);
 
