@@ -20,7 +20,14 @@ void popAllButBack(struct ring_buffer * r_buffer, char * data_buff) {
   for (size_t i = 0; i < r_buffer->length - 1; i++) {
     data_buff[i] = r_buffer->buffer[(r_buffer->head + i) % r_buffer->buffer_size];
   }
-  r_buffer->length = 1;
+
+  if (r_buffer->tail == 0)
+    r_buffer->head = r_buffer->buffer_size -1;
+
+  else
+    r_buffer->head = (r_buffer->tail - 1) % r_buffer->buffer_size;
+
+  r_buffer->length =1;
 }
 
 void pushBack(struct ring_buffer * r_buffer, char data) {
