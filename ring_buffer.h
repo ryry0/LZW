@@ -15,5 +15,6 @@ void popAllButBack(struct ring_buffer * r_buffer, char * data_buff);
 void pushBack(struct ring_buffer * r_buffer, char data);
 void printBuffer (struct ring_buffer * r_buffer);
 void destroyBuffer (struct ring_buffer * r_buffer);
+void readBuffer (struct ring_buffer * r_buffer, char * buffer);
 
 #endif

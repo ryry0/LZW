@@ -20,6 +20,7 @@ void popAllButBack(struct ring_buffer * r_buffer, char * data_buff) {
   for (size_t i = 0; i < r_buffer->length - 1; i++) {
     data_buff[i] = r_buffer->buffer[(r_buffer->head + i) % r_buffer->buffer_size];
   }
+  r_buffer->length = 1;
 }
 
 void pushBack(struct ring_buffer * r_buffer, char data) {
@@ -36,11 +37,21 @@ void pushBack(struct ring_buffer * r_buffer, char data) {
 } //end void pushBack
 
 void printBuffer (struct ring_buffer * r_buffer) {
-  for (int i = 0; i < r_buffer->length; i++) {
+  for (size_t i = 0; i < r_buffer->length; i++) {
     printf("%c", r_buffer->buffer[(r_buffer->head + i) % r_buffer->buffer_size]);
   }
   printf("\t length: %ld\n", r_buffer->length);
   printf("\n");
+}
+
+void readBuffer (struct ring_buffer * r_buffer, char * buffer) {
+  size_t i = 0;
+  for (i = 0; i < r_buffer->length; i++) {
+    buffer[i] =
+      r_buffer->buffer[ (r_buffer->head + i) %
+      r_buffer->buffer_size ];
+  }
+  buffer[i] = '\0';
 }
 
 void destroyBuffer (struct ring_buffer * r_buffer) {
