@@ -29,7 +29,7 @@ int main(int argc, char ** argv) {
       printf("File not found!");
       return 1;
     }
-    output_fd = open(argv[2], O_RDWR | O_CREAT | O_SYNC, 0666);
+    output_fd = open(argv[2], O_TRUNC |O_RDWR | O_CREAT, 0666);
   }
   else {
     printf("Please provide filenames for");
@@ -51,12 +51,19 @@ int main(int argc, char ** argv) {
     char output_buffer[BUFFER_SIZE] = {0};
     size_t write_len = 0;
 
+    printf("current character read: %c\n", current);
+    if (current == EOF)
+      break;
+
     pushBack(&input_buffer, current);
 
     //get string inside input_buffer
     readBuffer(&input_buffer, string_buffer);
+    printf("string buffer before retrieve: %s\n", string_buffer);
 
-    if ((last_match = retrieve(&dictionary, string_buffer)) != NULL) {
+    hash_node * node = NULL;
+    if ((node = retrieve(&dictionary, string_buffer)) != NULL) {
+      last_match = node;
       continue;
     }
 
@@ -67,11 +74,19 @@ int main(int argc, char ** argv) {
     write_len = input_buffer.length - 1;
     popAllButBack(&input_buffer, output_buffer);
 
-    if (last_match == NULL)
+    if (last_match == NULL) {
       write(output_fd, output_buffer, write_len);
+      printf("output_buffer: %s\n", output_buffer);
+    }
+    else {
 
-    else
-      write(output_fd, (char *) &last_match->data, sizeof(int));
+      sprintf(output_buffer, "%d", last_match->data);
+      write(output_fd, output_buffer, strlen(output_buffer));
+      /*
+      write(output_fd, (char *) &itoa(last_match->data), sizeof(int));
+      */
+      printf("output_buffer(int): %d\n", last_match->data);
+    }
   }
 
   close (input_fd);
