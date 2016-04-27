@@ -13,20 +13,8 @@ union ben {
   char c[2];
 };
 
-int fpeek(FILE *file) {
-  int c;
-  c = fgetc(file);
-  ungetc(c, file);
-  return c;
-}
-
-void initDictionary(hash_table *h_table) {
-  for (uint16_t i = 0; i < 256; ++i) {
-    char c[2] = {0};
-    c[0] = i;
-    insert(h_table, c, i);
-  }
-}
+int fpeek(FILE *file);
+void initDictionary(hash_table *h_table);
 
 int main(int argc, char ** argv) {
 
@@ -79,8 +67,10 @@ int main(int argc, char ** argv) {
       if (key < 60000) {
         insert(&dictionary, lookup_str, key++);
       } else {
+        /*
         printf("Dictionary full, no entry will be made for %s",
             lookup_str);
+            */
       } //end else
       memset(input_buffer, 0, BUFFER_SIZE); //clear buffer
       buffer_end = 0;
@@ -93,4 +83,19 @@ int main(int argc, char ** argv) {
   destroyTable(&dictionary);
 
   return 0;
+}
+
+void initDictionary(hash_table *h_table) {
+  for (uint16_t i = 0; i < 256; ++i) {
+    char c[2] = {0};
+    c[0] = i;
+    insert(h_table, c, i);
+  }
+}
+
+int fpeek(FILE *file) {
+  int c;
+  c = fgetc(file);
+  ungetc(c, file);
+  return c;
 }
