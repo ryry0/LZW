@@ -54,8 +54,10 @@ int main(int argc, char ** argv) {
     }
     string_arr[i][0] = (char)i;
   }
-  string_arr[0x0a00] = calloc(2, sizeof(char));
-  string_arr[0x0a00][0] = '\n';
+  /*
+    string_arr[0x0a00] = calloc(2, sizeof(char));
+    string_arr[0x0a00][0] = '\n';
+  */
 
   char input_buffer[BUFFER_SIZE] = {0};
   size_t buffer_end = 0;
