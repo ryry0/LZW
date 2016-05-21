@@ -47,12 +47,14 @@ void insert(hash_table * h_table, char * key, int data) {
   h_table->table[index]  = temp;
 }
 
+//recursive function to traverse the list to remove the node.
 hash_node * removeListNode(hash_node **root, char *key)
 {
   if(*root == NULL)
     return NULL;
   hash_node *temp = (*root)->next;
   if(strcmp((*root)->key, key)==0) {
+    free((*root)->key);
     free(*root);
     (*root) = removeListNode(&temp, key);
   } else {
@@ -61,6 +63,7 @@ hash_node * removeListNode(hash_node **root, char *key)
   return *root;
 }
 
+//call to remove a node from the list
 void removeNode(hash_table * h_table, char * key) {
   hash_node *found = retrieve(h_table, key);
   if(found == NULL)
@@ -86,6 +89,7 @@ void destroyTable(hash_table *h_table) {
   for(size_t i = 0; i < h_table->size; i++) {
     destroyNode(h_table->table[i]);
   }
+  free(h_table->table);
 }
 
 void destroyNode(hash_node *h_node) {
